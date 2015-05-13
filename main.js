@@ -1,8 +1,10 @@
 var omdb_url = 'http://www.omdbapi.com/?';
+$('.table-container').hide();
 var $movieSearch = $('.search-form');
 var $searchBar = $('input[name=search]')[0];
 var FIREBASE_URL = "https://movie-time.firebaseio.com/movie-time.json";
 var $movieDetails = $(".movie-info-display");
+
 
 $movieSearch.on('submit', function() {
   var movie = $searchBar.value;
@@ -39,6 +41,7 @@ $movieDetails.on('click', '.watch-button', function() {
 	console.log("hello!!!");
   var movie = $searchBar.value;
   var url = omdb_url + "t=" + movie + "&r=json";
+  $('.table-container').show();
   $.get(url, function (data) {
     $.post(FIREBASE_URL, JSON.stringify(data));
     addTableDetail(data);
@@ -68,7 +71,7 @@ function addTableDetail(data){
   $table.append("<tr></tr>");
   var $target = $("tr:last");
   var poster = data.Poster === "N/A" ? "http://i.imgur.com/rXuQiCm.jpg?1" : data.Poster;
-  $target.append("<td><img src=" + poster + "></img></td>");
+  $target.append("<td><img class='watch-list-poster' src=" + poster + "></img></td>");
   $target.append("<td class='movie-title'>"+ data.Title +"</td>");
   $target.append("<td>"+ data.Year +"</td>");
   $target.append("<td>"+ data.imdbRating +"</td>");

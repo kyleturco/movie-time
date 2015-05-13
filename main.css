@@ -51,6 +51,10 @@ h3 {
 	transition: .5s;
 }
 
+.btn-success {
+	margin-top: 10px;
+}
+
 .search-form {
 	margin-bottom: 25px;
 }
@@ -65,7 +69,19 @@ h3 {
 }
 
 table, table th{
-  text-align: center;
+  text-align: left;
+}
+
+tr {
+	border-top: 1px solid #dedede;
+}
+
+.table-poster {
+	text-align: left;
+}
+
+.watch-list-poster {
+	margin-top:3px;
 }
 
 .table-title {
@@ -74,6 +90,12 @@ table, table th{
 
 .movie-title {
 	text-align: left;
+}
+
+.movie-title-list {
+	font-family: Helvetica;
+	font-size: 16px;
+	font-weight: 600;
 }
 
 table img{
