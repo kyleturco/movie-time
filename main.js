@@ -1,10 +1,20 @@
-var omdb_url = 'http://www.omdbapi.com/?';
 $('.table-container').hide();
+var omdb_url = 'http://www.omdbapi.com/?';
 var $movieSearch = $('.search-form');
 var $searchBar = $('input[name=search]')[0];
 var FIREBASE_URL = "https://movie-time.firebaseio.com/movie-time.json";
 var $movieDetails = $(".movie-info-display");
+var $table = $("table");
 
+$.get(FIREBASE_URL, function(data){
+	if (data===null){
+		$table.hide();
+	} else {
+		Object.keys(data).forEach(function(id){
+			addTableDetail(data[id], id);
+		});
+	}
+});
 
 $movieSearch.on('submit', function() {
   var movie = $searchBar.value;
@@ -16,11 +26,11 @@ $movieSearch.on('submit', function() {
   return false;
 })
 
-function addMovieDetail(data) {
+function addMovieDetail(data, id) {
   var $target = $(".movie-detail");
   var $targetPoster = $(".movie-poster");
 
-  if (data.Title === undefined) {
+    if (data.Title === undefined) {
     $target.empty();
     $target.append("<h2>Sorry friend, that's not a movie!</h2>");
   } else {
@@ -43,9 +53,10 @@ $movieDetails.on('click', '.watch-button', function() {
   var url = omdb_url + "t=" + movie + "&r=json";
   $('.table-container').show();
   $.get(url, function (data) {
-    $.post(FIREBASE_URL, JSON.stringify(data));
-    addTableDetail(data);
-    }, 'jsonp');
+    $.post(FIREBASE_URL, JSON.stringify(data), function(res){
+    	addTableDetail(data, res.name);
+    })
+  }, 'jsonp');
  });
 
     // var $addBtn = $(".watch-button");
@@ -66,14 +77,28 @@ $movieDetails.on('click', '.watch-button', function() {
 	// })
 
 
-function addTableDetail(data){
+function addTableDetail(data, id){
+	console.log(id);
   var $table = $("table");
   $table.append("<tr></tr>");
   var $target = $("tr:last");
+  $target.attr("data-id", id);
   var poster = data.Poster === "N/A" ? "http://i.imgur.com/rXuQiCm.jpg?1" : data.Poster;
   $target.append("<td><img class='watch-list-poster' src=" + poster + "></img></td>");
-  $target.append("<td class='movie-title'>"+ data.Title +"</td>");
+  $target.append("<td class='movie-title-list'>"+ data.Title +"</td>");
   $target.append("<td>"+ data.Year +"</td>");
   $target.append("<td>"+ data.imdbRating +"</td>");
-  $target.append("<button class='btn btn-success'>"+ "&#10003" +"</button>");
+  $target.append("<button class='btn btn-danger'>"+ "x" +"</button>");
 }
+
+$table.on('click', 'button', function(){
+  var $movie = $(this).closest('tr');
+  var $id = $movie.attr('data-id');
+  console.log($id);
+  $movie.remove();
+  var deleteURL = FIREBASE_URL.slice(0, -5) + '/' + $id + '.json';
+  $.ajax({
+  url: deleteURL,
+  type: 'DELETE'
+  });
+})

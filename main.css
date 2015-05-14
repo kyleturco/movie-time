@@ -43,16 +43,19 @@ h3 {
 	text-transform: uppercase;
 	font-family: Helvetica;
 	border: none;
+	border-bottom: 2px solid #CF4A1A;
 }
 
 .btn-default:hover {
 	background: #F76802;
 	color: #fff;
 	transition: .5s;
+	border-bottom: 2px solid #CF4A1A;
 }
 
-.btn-success {
+.btn-danger {
 	margin-top: 10px;
+	margin-left: 7px;
 }
 
 .search-form {
@@ -60,7 +63,8 @@ h3 {
 }
 
 .movie-input {
-	padding: 5px;
+	padding: 6px;
+	margin-right: 10px;
 }
 
 .table-container{
@@ -86,6 +90,7 @@ tr {
 
 .table-title {
 	text-align: left;
+	width: 275px;
 }
 
 .movie-title {
