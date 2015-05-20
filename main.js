@@ -7,13 +7,13 @@ var $movieDetails = $(".movie-info-display");
 var $table = $("table");
 
 $.get(FIREBASE_URL, function(data){
-	if (data===null){
-		$table.hide();
-	} else {
-		Object.keys(data).forEach(function(id){
-			addTableDetail(data[id], id);
-		});
-	}
+  if (data===null){
+    $table.hide();
+  } else {
+    Object.keys(data).forEach(function(id){
+      addTableDetail(data[id], id);
+    });
+  }
 });
 
 $movieSearch.on('submit', function() {
@@ -44,41 +44,24 @@ function addMovieDetail(data, id) {
     $target.append("<p>" + data.Plot + "</p>");
     $target.append("<input class='btn btn-default watch-button' type='submit' value='Add Movie to List'></input>"); 
 
-	}
+  }
 }
  
 $movieDetails.on('click', '.watch-button', function() {
-	console.log("hello!!!");
+  console.log("hello!!!");
   var movie = $searchBar.value;
   var url = omdb_url + "t=" + movie + "&r=json";
   $('.table-container').show();
   $.get(url, function (data) {
     $.post(FIREBASE_URL, JSON.stringify(data), function(res){
-    	addTableDetail(data, res.name);
+      addTableDetail(data, res.name);
     })
   }, 'jsonp');
  });
 
-    // var $addBtn = $(".watch-button");
-
-    // $addBtn.click(function() {
-    //   var movie = $searchBar.value;
-    //   var url = omdb_URL + "t=" + movie + "&r=json";
-    //   console.log("is this on?");
-    //   $.get(url, function (data) {
-    //     $.post(FIREBASE_URL, JSON.stringify(data));
-    //     addTableDetail(data);
-    // }, 'jsonp');
-
- 	// 	var $addBtn = $('.watch-button');
- 	// 	$addBtn.click(function(){
-	// console.log("hello????")
-	// addTableDetail(data);
-	// })
-
 
 function addTableDetail(data, id){
-	console.log(id);
+  console.log(id);
   var $table = $("table");
   $table.append("<tr></tr>");
   var $target = $("tr:last");
